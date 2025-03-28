@@ -41,6 +41,15 @@ Route::middleware(['auth:api','role:admin'])->group(function () {
     Route::delete('/plants/{slug}', [PlantController::class, 'destroy']);
     Route::get('/stats', [StatsController::class, 'index']);
 });
+// client routes
+Route::middleware(['auth:api','role:client'])->group(function () {
+   Route::get('/plants', [PlantController::class, 'index']);
+   Route::get('/plants/{slug}',[PlantController::class,'show']);
+   Route::post('/orders', [OrderController::class, 'store']);
+   Route::get('orders/{order}', [OrderController::class, 'show']);
+   Route::delete('/orders/{id}', [OrderController::class, 'cancel']);
+});
+
 
 
 
