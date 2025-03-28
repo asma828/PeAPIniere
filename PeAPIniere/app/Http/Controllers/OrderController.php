@@ -7,6 +7,12 @@ use App\Repositories\Interfaces\OrderRepositoryInterface;
 use Illuminate\Http\Request;
 use Exception;
 
+/**
+ * @OA\Tag(
+ *     name="Orders",
+ *     description="Gestion des commandes"
+ * )
+ */
 class OrderController extends Controller
 {
     private $orderRepository;
@@ -16,6 +22,38 @@ class OrderController extends Controller
         $this->orderRepository = $orderRepository;
     }
 
+    /**
+     * Passer une commande.
+     * 
+     * @OA\Post(
+     *     path="/api/orders",
+     *     summary="Passer une commande",
+     *     tags={"Orders"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"items"},
+     *             @OA\Property(
+     *                 property="items",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="slug", type="string", example="rose"),
+     *                     @OA\Property(property="quantity", type="integer", example=2)
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Commande passée avec succès"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erreur serveur"
+     *     )
+     * )
+     */
     public function store(Request $request)
     {
         try {
@@ -33,6 +71,38 @@ class OrderController extends Controller
         }
     }
 
+    /**
+     * Annuler une commande.
+     * 
+     * @OA\Delete(
+     *     path="/api/orders/{id}",
+     *     summary="Annuler une commande",
+     *     tags={"Orders"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la commande",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Commande annulée avec succès"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Commande introuvable"
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Accès non autorisé"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Impossible d'annuler la commande"
+     *     )
+     * )
+     */
     public function cancel($id)
     {
         try {
@@ -57,6 +127,30 @@ class OrderController extends Controller
         }
     }
 
+    /**
+     * Afficher les détails d'une commande.
+     * 
+     * @OA\Get(
+     *     path="/api/orders/{orderId}",
+     *     summary="Afficher une commande",
+     *     tags={"Orders"},
+     *     @OA\Parameter(
+     *         name="orderId",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la commande",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Détails de la commande"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Commande introuvable ou accès refusé"
+     *     )
+     * )
+     */
     public function show($orderId)
     {
         try {
@@ -72,6 +166,37 @@ class OrderController extends Controller
         }
     }
 
+    /**
+     * Mettre à jour le statut de la commande.
+     * 
+     * @OA\Put(
+     *     path="/api/orders/{id}/status",
+     *     summary="Mettre à jour le statut de la commande",
+     *     tags={"Orders"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la commande",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"status"},
+     *             @OA\Property(property="status", type="string", enum={"en attente", "en préparation", "livrée"})
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Statut de la commande mis à jour avec succès"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erreur serveur"
+     *     )
+     * )
+     */
     public function updateStatus($id, Request $request)
     {
         try {
