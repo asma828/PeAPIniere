@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Repositories\Interfaces\CategoryDAOInterface;
 use Illuminate\Http\Request;
 use Exception;
+use OpenApi\Annotations as OA;
 
 class CategoryController extends Controller
 {
@@ -17,7 +18,17 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/categories",
+     *     summary="Get all categories",
+     *     tags={"Categories"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful retrieval",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Category"))
+     *     ),
+     *     @OA\Response(response=500, description="Failed to retrieve categories")
+     * )
      */
     public function index()
     {
@@ -29,7 +40,20 @@ class CategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/categories",
+     *     summary="Create a new category",
+     *     tags={"Categories"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name"},
+     *             @OA\Property(property="name", type="string", example="Technology")
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="Category created successfully"),
+     *     @OA\Response(response=500, description="Failed to create category")
+     * )
      */
     public function store(Request $request)
     {
@@ -45,7 +69,20 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/categories/{id}",
+     *     summary="Get a category by ID",
+     *     tags={"Categories"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Category ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Category retrieved successfully"),
+     *     @OA\Response(response=500, description="Failed to retrieve category")
+     * )
      */
     public function show($id)
     {
@@ -57,7 +94,27 @@ class CategoryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/categories/{id}",
+     *     summary="Update a category",
+     *     tags={"Categories"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Category ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name"},
+     *             @OA\Property(property="name", type="string", example="Updated Category Name")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Category updated successfully"),
+     *     @OA\Response(response=500, description="Failed to update category")
+     * )
      */
     public function update(Request $request, Category $category)
     {
@@ -73,7 +130,20 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/categories/{id}",
+     *     summary="Delete a category",
+     *     tags={"Categories"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Category ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Category deleted successfully"),
+     *     @OA\Response(response=500, description="Failed to delete category")
+     * )
      */
     public function destroy(Category $category)
     {
