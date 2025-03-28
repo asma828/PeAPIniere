@@ -31,6 +31,16 @@ Route::middleware('auth:api')->group(function () {
 });
 
 
+// admin routes
+Route::middleware(['auth:api','role:admin'])->group(function () {
+    Route::apiResource('categories', CategoryController::class);
+    // Route::apiResource('plants', PlantController::class);
+    Route::post('/plants', [PlantController::class, 'store']);
+    Route::get('/plants/{slug}', [PlantController::class, 'show']);
+    Route::put('/plants/{slug}', [PlantController::class, 'update']);
+    Route::delete('/plants/{slug}', [PlantController::class, 'destroy']);
+    Route::get('/stats', [StatsController::class, 'index']);
+});
 
 
 
