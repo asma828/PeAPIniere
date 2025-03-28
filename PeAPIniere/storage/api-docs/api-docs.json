@@ -604,16 +604,14 @@
                         "description": "Plante introuvable"
                     }
                 }
-            }
-        },
-        "/api/plants/{id}": {
+            },
             "put": {
                 "tags": [
                     "Plants"
                 ],
                 "summary": "Mettre à jour une plante",
                 "description": "Mettre à jour une plante.",
-                "operationId": "f433cfe28b4143acc3a1a4a77a7ab646",
+                "operationId": "e5981af9ce55cca7fc8eee04c3c0b488",
                 "parameters": [
                     {
                         "name": "id",
@@ -672,7 +670,7 @@
                 ],
                 "summary": "Supprimer une plante",
                 "description": "Supprimer une plante.",
-                "operationId": "d1d8619867ca56fe6fa122b59361b856",
+                "operationId": "72abaa41b86e9d3386648d6c79c2b1ab",
                 "parameters": [
                     {
                         "name": "id",
@@ -687,6 +685,69 @@
                 "responses": {
                     "200": {
                         "description": "Plante supprimée avec succès"
+                    },
+                    "500": {
+                        "description": "Erreur serveur"
+                    }
+                }
+            }
+        },
+        "/api/stats": {
+            "get": {
+                "tags": [
+                    "Statistics"
+                ],
+                "summary": "Obtenir les statistiques des ventes",
+                "description": "Obtenir les statistiques des ventes.",
+                "operationId": "1f1d53f5f1cebdfd25f2cc14b66c6cfb",
+                "responses": {
+                    "200": {
+                        "description": "Statistiques des ventes récupérées avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "total_ventes": {
+                                            "type": "integer",
+                                            "example": 1234
+                                        },
+                                        "plantes_populaires": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Rose"
+                                                    },
+                                                    "total_commandes": {
+                                                        "type": "integer",
+                                                        "example": 150
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "ventsParCategorie": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Fleurs"
+                                                    },
+                                                    "total_vendu": {
+                                                        "type": "integer",
+                                                        "example": 500
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Erreur serveur"
@@ -751,6 +812,10 @@
         {
             "name": "Plants",
             "description": "Gestion des plantes"
+        },
+        {
+            "name": "Statistics",
+            "description": "Statistiques sur les ventes de plantes"
         },
         {
             "name": "Authentication",

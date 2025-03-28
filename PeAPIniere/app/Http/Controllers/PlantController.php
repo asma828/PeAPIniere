@@ -130,7 +130,7 @@ class PlantController extends Controller
      * Mettre à jour une plante.
      * 
      * @OA\Put(
-     *     path="/api/plants/{id}",
+     *     path="/api/plants/{slug}",
      *     summary="Mettre à jour une plante",
      *     tags={"Plants"},
      *     @OA\Parameter(
@@ -180,7 +180,7 @@ class PlantController extends Controller
      * Supprimer une plante.
      * 
      * @OA\Delete(
-     *     path="/api/plants/{id}",
+     *     path="/api/plants/{slug}",
      *     summary="Supprimer une plante",
      *     tags={"Plants"},
      *     @OA\Parameter(
