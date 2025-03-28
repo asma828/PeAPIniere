@@ -50,6 +50,9 @@ Route::middleware(['auth:api','role:client'])->group(function () {
    Route::delete('/orders/{id}', [OrderController::class, 'cancel']);
 });
 
-
+//employe routes
+Route::middleware(['auth:api','role:employe'])->group(function(){
+   Route::patch('/orders/{id}/status', [OrderController::class, 'updateStatus']);
+});
 
 
