@@ -7,6 +7,12 @@ use App\Repositories\Interfaces\PlantDAOInterface;
 use Illuminate\Http\Request;
 use Exception;
 
+/**
+ * @OA\Tag(
+ *     name="Plants",
+ *     description="Gestion des plantes"
+ * )
+ */
 class PlantController extends Controller
 {
     protected $plantDAO;
@@ -17,7 +23,21 @@ class PlantController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Récupérer la liste des plantes.
+     * 
+     * @OA\Get(
+     *     path="/api/plants",
+     *     summary="Obtenir toutes les plantes",
+     *     tags={"Plants"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Liste des plantes récupérée avec succès"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erreur serveur"
+     *     )
+     * )
      */
     public function index()
     {
@@ -29,7 +49,32 @@ class PlantController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Ajouter une nouvelle plante.
+     * 
+     * @OA\Post(
+     *     path="/api/plants",
+     *     summary="Créer une plante",
+     *     tags={"Plants"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name","slug","price","category_id"},
+     *             @OA\Property(property="name", type="string", example="Rose"),
+     *             @OA\Property(property="slug", type="string", example="rose"),
+     *             @OA\Property(property="description", type="string", example="Belle plante"),
+     *             @OA\Property(property="price", type="number", format="float", example=19.99),
+     *             @OA\Property(property="category_id", type="integer", example=1)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Plante ajoutée avec succès"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erreur serveur"
+     *     )
+     * )
      */
     public function store(Request $request)
     {
@@ -49,7 +94,28 @@ class PlantController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Obtenir une plante par slug.
+     * 
+     * @OA\Get(
+     *     path="/api/plants/{slug}",
+     *     summary="Obtenir une plante par son slug",
+     *     tags={"Plants"},
+     *     @OA\Parameter(
+     *         name="slug",
+     *         in="path",
+     *         required=true,
+     *         description="Slug de la plante",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Plante trouvée"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Plante introuvable"
+     *     )
+     * )
      */
     public function show($slug)
     {
@@ -61,7 +127,37 @@ class PlantController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Mettre à jour une plante.
+     * 
+     * @OA\Put(
+     *     path="/api/plants/{id}",
+     *     summary="Mettre à jour une plante",
+     *     tags={"Plants"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la plante",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example="Tulipe"),
+     *             @OA\Property(property="slug", type="string", example="tulipe"),
+     *             @OA\Property(property="description", type="string", example="Plante colorée"),
+     *             @OA\Property(property="price", type="number", format="float", example=14.99),
+     *             @OA\Property(property="category_id", type="integer", example=2)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Plante mise à jour avec succès"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erreur serveur"
+     *     )
+     * )
      */
     public function update(Request $request, Plant $plant)
     {
@@ -81,7 +177,28 @@ class PlantController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Supprimer une plante.
+     * 
+     * @OA\Delete(
+     *     path="/api/plants/{id}",
+     *     summary="Supprimer une plante",
+     *     tags={"Plants"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la plante",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Plante supprimée avec succès"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erreur serveur"
+     *     )
+     * )
      */
     public function destroy(Plant $plant)
     {
